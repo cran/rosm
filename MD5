@@ -1,0 +1,15 @@
+7cca2b8f6d551faaaeb3e24d6e1b5a5b *DESCRIPTION
+010316ad9e7e36432ed6be900da4391a *NAMESPACE
+8cd169a1cf8896bd1f954cc7d52b4106 *R/bingmaps.R
+83eb638eafc6f6b4e5555ec6b81f185b *R/commonplot.R
+ff3ab58f9c287a09cbfef4f25700cea3 *R/googlemaps.R
+a448929741609abd81532e82b3befd99 *R/osmplot.R
+8ec1ce246f94a65afa3b7b55ef152630 *R/osmtile.R
+84c3a743c33c17bfa76d10ed0d49331d *R/projections.R
+b36da84b71f6abfd949f06d1f6be660e *R/tileurl.R
+b2b00f1dac420a164f7a564c6921e971 *man/bmaps.plot.Rd
+c33039045d92504dd41cc697c1214819 *man/bmaps.types.Rd
+b35a19da5fdc54f46e5eb67d80e95e65 *man/osm.plot.Rd
+7e3c3cbf594f02bd69eb2cce3c77f1d9 *man/osm.types.Rd
+2fdf933e67fc1e19c66c8acad6e53113 *man/rosm-package.Rd
+85d5ee9ad078d2afe7be29682097b578 *tests/manual/tests.R
