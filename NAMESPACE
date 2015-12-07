@@ -3,4 +3,5 @@
 export(bmaps.plot)
 export(bmaps.types)
 export(osm.plot)
+export(osm.raster)
 export(osm.types)

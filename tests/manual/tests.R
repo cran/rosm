@@ -3,11 +3,14 @@ library(rcanvec)
 library(prettymapr)
 library(maptools)
 library(sp)
+library(cartography)
+library(raster)
+
 
 nsbox <- prettymapr::searchbbox("nova scotia", source="google")
 types <- c("hikebike","hillshade","hotstyle","lovinacycle",
            "lovinahike","mapquestosm","mapquestsat","opencycle",
-           "openpiste","osm","osmgrayscale",
+           "osm","osmgrayscale", #openpiste doesn't work
            "osmtransport","stamenbw","stamenwatercolor",
            "thunderforestlandscape","thunderforestoutdoors")
 
@@ -79,10 +82,15 @@ for(loc in smalllocs) {
 # prettymap(osm.plot(makebbox(89.9, 179.9, -89.9, -179.9)))
 
 #plot wrap around situations
-osm.plot(zoombbox(makebbox(89.9, 179.9, -89.9, -179.9), 2, c(-92, 0)), zoomin=1)
+osm.plot(zoombbox(makebbox(89.9, 179.9, -89.9, -179.9), 2, c(-100, 0)), zoomin=1)
 osm.plot(zoombbox(makebbox(89.9, 179.9, -89.9, -179.9), 2, c(-100, 0)), zoomin=1, project=F)
 osm.plot(prettymapr::searchbbox("alaska", source="google"))
+osm.plot(prettymapr::searchbbox("alaska", source="google"), project=F)
 bmaps.plot(prettymapr::searchbbox("alaska", source="google"))
+
+#wrap around for projected version of Alaska does not work
+x <- osm.raster(prettymapr::searchbbox("alaska", source="google"), projection=CRS("+init=epsg:3857"))
+plotRGB(x)
 
 biglocs <- c("nova scotia", "united states", "canada", "alberta")
 data("wrld_simpl")
@@ -128,3 +136,44 @@ tile.url.darkmatter <- function(xtile, ytile, zoom) {
                zoom, xtile, ytile, sep="/"), ".png")
 }
 osm.plot(nsbox, type="darkmatter")
+
+
+#osm.raster
+data(nuts2006)
+for(country in c("PL", "PT", "RO", "SE", "SI", "SK")) {
+  message("Testing country ", country)
+  spdf <- nuts0.spdf[nuts0.spdf$id==country,]
+  x <- osm.raster(spdf, type="thunderforestlandscape")
+  plotRGB(x)
+  plot(spdf, add=T)
+}
+
+ns <- makebbox(47.2, -59.7, 43.3, -66.4)
+x <- osm.raster(ns, projection=CRS("+init=epsg:26920"), crop=TRUE)
+plotRGB(x)
+
+x <- osm.raster(ns)
+plotRGB(x)
+
+x <- osm.raster(ns, crop=TRUE)
+plotRGB(x)
+
+data("wrld_simpl")
+canada <- wrld_simpl[wrld_simpl$NAME=="Canada",]
+usa <- wrld_simpl[wrld_simpl$NAME=="United States",]
+canadamerc <- spTransform(canada, CRS("+init=epsg:3857"))
+usamerc <- spTransform(usa, CRS("+init=epsg:3857"))
+
+#does not perform wrap-around properly for alaska when projection is set to true
+
+usabbox <- searchbbox("alaska", source="google")
+x <- osm.raster(usabbox, projection=CRS("+init=epsg:3338"), crop=T) #alaska albers, crops at -180
+x <- osm.raster(usabbox) #works
+x <- osm.raster(usabbox, crop=TRUE) #crops at -180
+plotRGB(x)
+plot(usamerc, add=T)
+
+#write to disk check
+osm.raster(x, filename="test.tif")
+osm.raster(usabbox, projection=CRS("+init=epsg:3338"), crop=T, filename="test.tif", overwrite=TRUE)
+
