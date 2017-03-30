@@ -1,6 +1,22 @@
 
-#modified from http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#R
+# modified from http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#R
 
+bmaps.quadkey <- function(tilex, tiley, zoom) {
+  nzoom <- 2^zoom
+  if(tilex < 0 || tilex >= nzoom) stop("xtile out of range: ", tilex)
+  if(tiley < 0 || tiley >= nzoom) stop("ytile out of range: ", tilex)
+  out <- ""
+  keymap <- matrix(0:3, byrow=TRUE, ncol=2)
+  decx <- tilex/nzoom
+  decy <- tiley/nzoom
+  for(i in 1:zoom) {
+    n <- 2^i
+    x <- floor(decx*2^i) - floor(decx*2^(i-1))*2
+    y <- floor(decy*2^i) - floor(decy*2^(i-1))*2
+    out <- paste0(out, keymap[y+1,x+1])
+  }
+  out
+}
 
 tiles.bybbox <- function(bbox, zoom, epsg=4326) {
   nwlatlon <- .tolatlon(bbox[1,1], bbox[2,2], epsg)
@@ -67,7 +83,12 @@ tile.bbox <- function(xtile, ytile, zoom, epsg=4326) {
 }
 
 tile.url <- function(xtile, ytile, zoom, type) {
-  do.call(paste0("tile.url.", type), list(xtile, ytile, zoom))
+  fun <- type$get_tile_url
+  if("quadkey" %in% names(formals(fun))) {
+    fun(xtile, ytile, zoom, quadkey = bmaps.quadkey(xtile, ytile, zoom))
+  } else {
+    fun(xtile, ytile, zoom)
+  }
 }
 
 tile.ext <- function(type) {
@@ -77,17 +98,20 @@ tile.ext <- function(type) {
 }
 
 tile.maxzoom <- function(type) {
-  if(methods::existsFunction(paste0("tile.maxzoom.", type))) {
-    do.call(paste0("tile.maxzoom.", type), list())
-  } else {
-    return(19)
-  }
+  type$get_max_zoom()
+}
+
+tile.maxzoom.default <- function() {
+  return(19)
+}
+
+tile.minzoom.default <- function() {
+  return(0)
 }
 
 tile.attribute <- function(type) {
-  if(methods::existsFunction(paste0("tile.attribute.", type))) {
-    do.call(paste0("tile.attribute.", type), list())
-  }
+  attribution <- type$get_attribution()
+  if(!is.null(attribution)) message(attribution)
 }
 
 tile.cachename <- function(xtile, ytile, zoom, type, cachedir=NULL) {
@@ -96,35 +120,44 @@ tile.cachename <- function(xtile, ytile, zoom, type, cachedir=NULL) {
   file.path(folder, paste0(zoom, "_", xtile, "_", ytile, ".", ext))
 }
 
-tile.download <- function(tiles, zoom, type="osm", forcedownload=FALSE, cachedir=NULL) {
+tile.download <- function(tiles, zoom, type="osm", forcedownload=FALSE, cachedir=NULL,
+                          progress="text", quiet = TRUE, pause=0.1) {
   if(!forcedownload) {
     # check which tiles exist
-    texists <- sapply(1:nrow(tiles), function(i) {
+    texists <- vapply(1:nrow(tiles), function(i) {
       cachename <- tile.cachename(tiles[i,1], tiles[i,2], zoom, type, cachedir)
       return(file.exists(cachename))
-    })
-    tiles <- tiles[!texists,]
+    }, logical(1))
+    tiles <- tiles[!texists, , drop = FALSE]
   }
 
   if(nrow(tiles) > 0) {
-    message("Fetching ", nrow(tiles), " missing tiles")
-    pb <- utils::txtProgressBar(min=0, max=nrow(tiles), width = 20, file = stderr())
-    for(i in 1:nrow(tiles)) {
-      xtile <- tiles[i,1]
-      ytile <- tiles[i,2]
+    if(progress != "none") {
+      message("Fetching ", nrow(tiles), " missing tiles")
+      pb <- utils::txtProgressBar(min=0, max=nrow(tiles), width = 20, file = stderr())
+    }
+
+    tile.apply(tiles, zoom, type, fun=function(xtile, ytile, zoom, type, epsg, cachedir) {
       cachename <- tile.cachename(xtile, ytile, zoom, type, cachedir)
       url <- tile.url(xtile, ytile, zoom, type)
-      tryCatch(utils::download.file(url, cachename, quiet = TRUE, mode="wb"),
-               error=function(err) {
-                 message("Error downloading tile ", xtile, ",", ytile, " (zoom: ",
-                         zoom, "): ", err)
-               }, warning=function(warn) {
-                 message("Error downloading tile (tile likely does not exist ",
-                         "or no internet connection) ", xtile, ",", ytile, " (zoom: ",
-                         zoom, "): ", warn)
-               })
-      utils::setTxtProgressBar(pb, i)
-    }
-    message("...complete!")
+      # pause to avoid overwhelming servers
+      if(pause > 0) Sys.sleep(pause)
+
+      # try to download file (probably a better way to do this than download.file())
+      result <- try(suppressWarnings(utils::download.file(url, cachename, quiet = TRUE, mode="wb")),
+                    silent = TRUE)
+
+      # display errors only in progress mode
+      if(!quiet && (class(result) == "try-error")) {
+        message(sprintf("Failed to download tile %s:(%s, %s) for type %s / %s",
+                        zoom, xtile, ytile, type, result))
+      } else if(!quiet && !file.exists(cachename)) {
+        message(sprintf("Failed to download tile %s:(%s, %s) for type %s",
+                        zoom, xtile, ytile, type))
+      }
+
+    }, epsg=NULL, cachedir=cachedir, progress=progress)
+
+    if(progress != "none") message("...complete!")
   }
 }
