@@ -1,7 +1,7 @@
 Package: rosm
 Type: Package
 Title: Plot Raster Map Tiles from Open Street Map and Other Sources
-Version: 0.2
+Version: 0.2.1
 Date: 2017-03-30
 Encoding: UTF-8
 Authors@R: c(person("Dewey", "Dunnington", role = c("aut", "cre"),
@@ -14,14 +14,15 @@ Description: Download and plot Open Street Map <http://www.openstreetmap.org/>,
     high-resolution basemaps and add hillshade to vector-based maps.
 License: GPL-2
 LazyData: TRUE
-Imports: abind, jpeg, png, sp, rgdal, rjson, methods, plyr, prettymapr
-Suggests: rcanvec, cartography, raster, reshape2
+Imports: curl, abind, jpeg, png, sp, rgdal, rjson, methods, plyr,
+        prettymapr
+Suggests: rcanvec, cartography, raster, testthat
 URL: https://github.com/paleolimbot/rosm
 BugReports: https://github.com/paleolimbot/rosm/issues
 RoxygenNote: 5.0.1
 NeedsCompilation: no
-Packaged: 2017-03-30 16:37:56 UTC; dewey
+Packaged: 2017-04-01 22:19:42 UTC; dewey
 Author: Dewey Dunnington [aut, cre],
   Timothée Giraud [ctb]
 Repository: CRAN
-Date/Publication: 2017-03-30 21:38:26 UTC
+Date/Publication: 2017-04-01 22:53:42 UTC
