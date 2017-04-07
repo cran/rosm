@@ -1,11 +1,12 @@
-e42d807dbdc7a126f2f2ed3edd7f95dd *DESCRIPTION
-5396cb2a1f1e4ee57c11b5c5744bab62 *NAMESPACE
+c7ceb36574074386cc17e4eaced7e165 *DESCRIPTION
+dba3c67b1442bd698e0f18c129d0f718 *NAMESPACE
 61eb6daf893c178e2c9fd86ad4b1a6f0 *R/0_tilespec.R
-77ff1d1c81c62b922e8ddd8dfd70c542 *R/1_tiles.R
+6a014877767b554194bd3fa1ca2f7b3a *R/1_tiles.R
 cdc7765dbe38814b1e0cf6bcfd883e18 *R/bingmaps.R
-3355db00255e4418ed461ceebe309e00 *R/commonplot.R
-4b97f4ae53368fb2a2fa8f63bf6bca35 *R/extract.R
-6d2781076fd2d0d1d9afedc9225e1988 *R/osmplot.R
+7565e7a56bb3e7397c6ddce809c835d0 *R/cachedir.R
+4eef5417a314b7203862a0bb058b331c *R/commonplot.R
+6e8bb322361b21d07487e08118cd2b55 *R/extract.R
+babc012c4567bd0284aaebf2aadcd1c4 *R/osmplot.R
 f3019a8abc86699e163c06d23d4fc111 *R/osmraster.R
 8a45de5182d7fbe2d938151af5b44845 *R/overlays.R
 6ce68024c37cd751f4afe35535562a4e *R/projections.R
@@ -32,4 +33,5 @@ dae834f73bc96e8928486a8b8125c14b *man/osm.points.Rd
 16603b35c735e3b36f009168a66f11d6 *man/osm.types.Rd
 43e1b8697bbe2f1875656a988b013995 *man/register_tile_source.Rd
 f1c81c0fcaffe100fa1f0aaf6d5d6adb *man/rosm.Rd
-983829bfac65e325b2d4c10b4e2666f5 *tests/manual/tests.R
+d96a769bc3bbecc5248af30f158c213d *man/set_default_cachedir.Rd
+691dcb344349422871fd4860ad27a22f *tests/manual/tests.R
