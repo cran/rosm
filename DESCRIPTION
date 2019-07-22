@@ -1,7 +1,7 @@
 Package: rosm
 Type: Package
 Title: Plot Raster Map Tiles from Open Street Map and Other Sources
-Version: 0.2.4
+Version: 0.2.5
 Encoding: UTF-8
 Authors@R: c(person("Dewey", "Dunnington", role = c("aut", "cre"),
 				email = "dewey@fishandwhistle.net", comment = c(ORCID = "0000-0002-9415-4582")),
@@ -20,8 +20,8 @@ BugReports: https://github.com/paleolimbot/rosm/issues
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2019-03-15 16:46:52 UTC; dewey
+Packaged: 2019-07-22 01:02:36 UTC; dewey
 Author: Dewey Dunnington [aut, cre] (<https://orcid.org/0000-0002-9415-4582>),
   Timothée Giraud [ctb]
 Repository: CRAN
-Date/Publication: 2019-03-15 17:10:33 UTC
+Date/Publication: 2019-07-22 04:30:04 UTC
