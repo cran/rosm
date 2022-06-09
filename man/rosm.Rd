@@ -3,11 +3,10 @@
 \docType{package}
 \name{rosm}
 \alias{rosm}
-\alias{rosm-package}
 \title{Plot Raster Map Tiles From Open Street Map and Other Sources}
 \description{
-This package provides access and plots \href{http://www.openstreetmap.org/}{Open Street Map}
-and \href{http://www.bing.com/maps}{Bing Maps} tiles
+This package provides access and plots \href{https://www.openstreetmap.org/}{Open Street Map}
+and \href{https://www.bing.com/maps}{Bing Maps} tiles
 to create high-resolution basemaps and use hillshade tiles to add texture to other maps.
 Uses the '\href{https://cran.r-project.org/package=sp}{sp}' package to plot using base graphics. Plot Open Street Map derivative
 tiles using \link{osm.plot}, and plot Bing maps (Aerial, Labeled Aerial, Road) using
@@ -17,6 +16,7 @@ tiles in a \code{RasterStack} or write to disk (requires
 the '\href{https://cran.r-project.org/package=raster}{raster}' package.)
 }
 \examples{
+\dontshow{if (identical(Sys.getenv("R_PRETTYMAPR_HAS_API_KEY"), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 \donttest{
  library(prettymapr)
@@ -47,11 +47,11 @@ the '\href{https://cran.r-project.org/package=raster}{raster}' package.)
  osm.plot(nsbox)
 
  }
-
+\dontshow{\}) # examplesIf}
 }
 \references{
-\href{http://wiki.openstreetmap.org/wiki/Tile_servers}{Open Street Map tile servers},
-\href{https://www.microsoft.com/maps/choose-your-bing-maps-API.aspx}{Bing Maps API documentation}
+\href{https://wiki.openstreetmap.org/wiki/Tile_servers}{Open Street Map tile servers},
+\href{https://www.microsoft.com/en-us/maps/choose-your-bing-maps-api}{Bing Maps API documentation}
 }
 \author{
 Dewey Dunnington <dewey@fishandwhistle.net>

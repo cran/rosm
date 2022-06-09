@@ -12,7 +12,7 @@ bmaps.plot(bbox, type = "Aerial", key = NULL, ...)
 \item{type}{Use \code{Aerial}, \code{AerialWithLabels}, or \code{Road}.}
 
 \item{key}{If plotting a large number of images, consider getting your own (free) key at
-the \href{https://msdn.microsoft.com/en-us/library/ff428642.aspx}{Microsoft Website}.}
+the Microsoft Website.}
 
 \item{...}{Arguments passed on to \link{osm.plot}.}
 }
@@ -21,10 +21,11 @@ Identical syntax to \link{osm.plot}, but using Bing maps (\url{https://www.bing.
 instead of Open Street Map.
 }
 \examples{
+\dontshow{if (has_internet()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
 library(prettymapr)
 bmaps.plot(makebbox(47.2, -59.7, 43.3, -66.4))
 bmaps.plot(makebbox(47.2, -59.7, 43.3, -66.4), type="Road")
 }
-
+\dontshow{\}) # examplesIf}
 }

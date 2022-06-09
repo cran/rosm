@@ -4,8 +4,7 @@
 \alias{osm.segments}
 \title{Overlay segments on an OSM plot}
 \usage{
-osm.segments(x0, y0, x1 = x0, y1 = y0, epsg = 4326, toepsg = 3857,
-  ...)
+osm.segments(x0, y0, x1 = x0, y1 = y0, epsg = 4326, toepsg = 3857, ...)
 }
 \arguments{
 \item{x0}{X1 coordinate vector}
@@ -27,6 +26,7 @@ Plot segments on a plot created by \link{osm.plot}. This is a simple wrapper aro
 \code{segments()}.
 }
 \examples{
+\dontshow{if (identical(Sys.getenv("R_PRETTYMAPR_HAS_API_KEY"), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
 library(rosm)
 library(prettymapr)
@@ -36,5 +36,5 @@ prettymap({
   osm.segments(locs$lon[1:2], locs$lat[1:2], locs$lon[2:3], locs$lat[2:3])
 })
 }
-
+\dontshow{\}) # examplesIf}
 }
